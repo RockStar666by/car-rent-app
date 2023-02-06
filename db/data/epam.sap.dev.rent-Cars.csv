@@ -1,0 +1,4 @@
+carUUID;carID;toOffice_officeUUID;makeID_ID;modelID_ID;status_ID;quantity;available;rent;CurrencyCode_code
+83726370-e533-4146-96e3-77a821d0757b;1;17a37cc2-711b-4da0-9561-a247519d18c0;1;1;2;200;45;50;USD
+1ef18fdc-3bf5-41d1-ad08-df4fdf7e136d;2;17a37cc2-711b-4da0-9561-a247519d18c0;2;2;1;300;61;45;USD
+514e9780-34c3-47f0-ac57-ddb30923646a;3;07a01892-483f-4021-a313-0b52d33f342f;3;3;1;250;53;45;USD

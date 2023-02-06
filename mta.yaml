@@ -1,0 +1,183 @@
+_schema-version: "3.1"
+ID: car-rent-app
+description: A simple CAP project.
+version: 1.0.0
+modules:
+  - name: car-rent-app-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: car-rent-app-db
+      - name: uaa_car-rent-app
+      - name: dest-service
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+  - name: car-rent-app-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: car-rent-app-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: car-rent-app-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: car-rent-app-destination-service
+        parameters:
+          content-target: true
+      - name: car-rent-app_html_repo_host
+        parameters:
+          service-key:
+            name: car-rent-app_html_repo_host-key
+      - name: uaa_car-rent-app
+        parameters:
+          service-key:
+            name: uaa_car-rent-app-key
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: carrentservice_car_rent_app_html_repo_host
+              ServiceInstanceName: car-rent-app-html5-app-host-service
+              ServiceKeyName: car-rent-app_html_repo_host-key
+              sap.cloud.service: carrentservice
+            - Authentication: OAuth2UserTokenExchange
+              Name: carrentservice_uaa_car_rent_app
+              ServiceInstanceName: car-rent-app-xsuaa-service
+              ServiceKeyName: uaa_car-rent-app-key
+              sap.cloud.service: carrentservice
+          existing_destinations_policy: ignore
+    build-parameters:
+      no-source: true
+  - name: car-rent-app-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: car-rent-app_html_repo_host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - zlabzlabbooking.zip
+          name: zlabzlabbooking
+          target-path: resources/
+        - artifacts:
+            - zlabzlabclients.zip
+          name: zlabzlabclients
+          target-path: resources/
+        - artifacts:
+            - zlabzlabcars.zip
+          name: zlabzlabcars
+          target-path: resources/
+        - artifacts:
+            - zlabzlaboffices.zip
+          name: zlabzlaboffices
+          target-path: resources/
+  - name: zlabzlabbooking
+    type: html5
+    path: app/zlabbooking
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: zlabzlabclients
+    type: html5
+    path: app/zlabclients
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: zlabzlabcars
+    type: html5
+    path: app/zlabcars
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: zlabzlaboffices
+    type: html5
+    path: app/zlaboffices
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+resources:
+  - name: car-rent-app-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: car-rent-app-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: car-rent-app-srv-api
+                ProxyType: Internet
+                Type: HTTP
+                URL: ~{srv-api/srv-url}
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: car-rent-app-destination-service
+      service-plan: lite
+    requires:
+      - name: srv-api
+  - name: car-rent-app_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: car-rent-app-html5-app-host-service
+      service-plan: app-host
+  - name: uaa_car-rent-app
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-name: car-rent-app-xsuaa-service
+      service-plan: application
+  - name: dest-service
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service: destination
+      service-name: dest-service
+      service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx -p @sap/cds-dk cds build --production

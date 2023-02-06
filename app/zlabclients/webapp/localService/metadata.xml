@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="RentService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Booking" EntityType="RentService.Booking">
+                    <NavigationPropertyBinding Path="carID" Target="Cars"/>
+                    <NavigationPropertyBinding Path="clientID" Target="Clients"/>
+                    <NavigationPropertyBinding Path="bookingStatus" Target="Statuses"/>
+                </EntitySet>
+                <EntitySet Name="Cars" EntityType="RentService.Cars">
+                    <NavigationPropertyBinding Path="toOffice" Target="Offices"/>
+                    <NavigationPropertyBinding Path="make" Target="Makes"/>
+                    <NavigationPropertyBinding Path="model" Target="Models"/>
+                    <NavigationPropertyBinding Path="status" Target="CarStatuses"/>
+                    <NavigationPropertyBinding Path="CurrencyCode" Target="Currencies"/>
+                </EntitySet>
+                <EntitySet Name="Clients" EntityType="RentService.Clients"/>
+                <EntitySet Name="Offices" EntityType="RentService.Offices">
+                    <NavigationPropertyBinding Path="cars" Target="Cars"/>
+                </EntitySet>
+                <EntitySet Name="Statuses" EntityType="RentService.Statuses"/>
+                <EntitySet Name="CarStatuses" EntityType="RentService.CarStatuses"/>
+                <EntitySet Name="Makes" EntityType="RentService.Makes"/>
+                <EntitySet Name="Models" EntityType="RentService.Models"/>
+                <EntitySet Name="Currencies" EntityType="RentService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="RentService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="Booking">
+                <Key>
+                    <PropertyRef Name="bookingUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="bookingUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="bookingID" Type="Edm.Int32"/>
+                <NavigationProperty Name="carID" Type="RentService.Cars">
+                    <ReferentialConstraint Property="carID_carUUID" ReferencedProperty="carUUID"/>
+                </NavigationProperty>
+                <Property Name="carID_carUUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="clientID" Type="RentService.Clients">
+                    <ReferentialConstraint Property="clientID_clientUUID" ReferencedProperty="clientUUID"/>
+                </NavigationProperty>
+                <Property Name="clientID_clientUUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="bookingStatus" Type="RentService.Statuses">
+                    <ReferentialConstraint Property="bookingStatus_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="bookingStatus_ID" Type="Edm.String"/>
+                <Property Name="beginDate" Type="Edm.Date"/>
+                <Property Name="beginTime" Type="Edm.TimeOfDay"/>
+                <Property Name="endDate" Type="Edm.Date"/>
+                <Property Name="endTime" Type="Edm.TimeOfDay"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Cars">
+                <Key>
+                    <PropertyRef Name="carUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="carUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="carID" Type="Edm.Int32"/>
+                <NavigationProperty Name="toOffice" Type="RentService.Offices" Partner="cars">
+                    <ReferentialConstraint Property="toOffice_officeUUID" ReferencedProperty="officeUUID"/>
+                </NavigationProperty>
+                <Property Name="toOffice_officeUUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="make" Type="RentService.Makes">
+                    <ReferentialConstraint Property="make" ReferencedProperty="name"/>
+                </NavigationProperty>
+                <Property Name="make" Type="Edm.String"/>
+                <NavigationProperty Name="model" Type="RentService.Models">
+                    <ReferentialConstraint Property="model" ReferencedProperty="name"/>
+                </NavigationProperty>
+                <Property Name="modelID_ID" Type="Edm.String"/>
+                <NavigationProperty Name="status" Type="RentService.CarStatuses">
+                    <ReferentialConstraint Property="status_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="status_ID" Type="Edm.String"/>
+                <Property Name="quantity" Type="Edm.Int32"/>
+                <Property Name="available" Type="Edm.Int32"/>
+                <Property Name="rent" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <NavigationProperty Name="CurrencyCode" Type="RentService.Currencies">
+                    <ReferentialConstraint Property="CurrencyCode_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="CurrencyCode_code" Type="Edm.String" MaxLength="3"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Clients">
+                <Key>
+                    <PropertyRef Name="clientUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="clientUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="clientID" Type="Edm.Int32"/>
+                <Property Name="firstName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="lastName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="clientBirthday" Type="Edm.Date"/>
+                <Property Name="phoneNumber" Type="Edm.String" MaxLength="30"/>
+                <Property Name="licenseID" Type="Edm.String" MaxLength="15"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Offices">
+                <Key>
+                    <PropertyRef Name="officeUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="officeUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="officeID" Type="Edm.Int32"/>
+                <Property Name="city" Type="Edm.String" MaxLength="40"/>
+                <Property Name="street" Type="Edm.String" MaxLength="40"/>
+                <NavigationProperty Name="cars" Type="Collection(RentService.Cars)" Partner="toOffice"/>
+                <Property Name="phoneNumber" Type="Edm.String" MaxLength="15"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Statuses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="CarStatuses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Makes">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+            </EntityType>
+            <EntityType Name="Models">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <Property Name="numcode" Type="Edm.Int32"/>
+                <Property Name="exponent" Type="Edm.Int32"/>
+                <Property Name="minor" Type="Edm.String"/>
+                <NavigationProperty Name="texts" Type="Collection(RentService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="RentService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Annotations Target="RentService.Booking/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="RentService.Booking/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="RentService.Booking/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="RentService.Booking/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="RentService.Booking/image">
+                                        <Annotation Term="Core.MediaType" String="image/png"/>
+                                    </Annotations>
+                                    <Annotations Target="RentService.Cars/createdAt">
+                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                        </Annotations>
+                                        <Annotations Target="RentService.Cars/createdBy">
+                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                </Annotations>
+                                                <Annotations Target="RentService.Cars/modifiedAt">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="RentService.Cars/modifiedBy">
+                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="RentService.Cars/CurrencyCode">
+                                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                    <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="RentService.Cars/CurrencyCode_code">
+                                                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                            <Annotation Term="Common.ValueList">
+                                                                                <Record Type="Common.ValueListType">
+                                                                                    <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                        <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                        <PropertyValue Property="Parameters">
+                                                                                            <Collection>
+                                                                                                <Record Type="Common.ValueListParameterInOut">
+                                                                                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CurrencyCode_code"/>
+                                                                                                    <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                </Record>
+                                                                                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                    <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                </Record>
+                                                                                            </Collection>
+                                                                                        </PropertyValue>
+                                                                                    </Record>
+                                                                                </Annotation>
+                                                                                <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="RentService.Cars/image">
+                                                                                    <Annotation Term="Core.MediaType" String="image/png"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="RentService.Clients/createdAt">
+                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="RentService.Clients/createdBy">
+                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="RentService.Clients/modifiedAt">
+                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="RentService.Clients/modifiedBy">
+                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="RentService.Clients/image">
+                                                                                                            <Annotation Term="Core.MediaType" String="image/png"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="RentService.Offices/createdAt">
+                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                            </Annotations>
+                                                                                                            <Annotations Target="RentService.Offices/createdBy">
+                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                    </Annotations>
+                                                                                                                    <Annotations Target="RentService.Offices/modifiedAt">
+                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="RentService.Offices/modifiedBy">
+                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="RentService.Offices/image">
+                                                                                                                                    <Annotation Term="Core.MediaType" String="image/png"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="RentService.Currencies">
+                                                                                                                                    <Annotation Term="UI.Identification">
+                                                                                                                                        <Collection>
+                                                                                                                                            <Record Type="UI.DataField">
+                                                                                                                                                <PropertyValue Property="Value" Path="name"/>
+                                                                                                                                            </Record>
+                                                                                                                                        </Collection>
+                                                                                                                                    </Annotation>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="RentService.Currencies/name">
+                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                    </Annotations>
+                                                                                                                                    <Annotations Target="RentService.Currencies/descr">
+                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                        </Annotations>
+                                                                                                                                        <Annotations Target="RentService.Currencies/code">
+                                                                                                                                            <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                            </Annotations>
+                                                                                                                                            <Annotations Target="RentService.Currencies/symbol">
+                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="RentService.Currencies_texts/locale">
+                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                    </Annotations>
+                                                                                                                                                    <Annotations Target="RentService.Currencies_texts/name">
+                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                        </Annotations>
+                                                                                                                                                        <Annotations Target="RentService.Currencies_texts/descr">
+                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                            </Annotations>
+                                                                                                                                                            <Annotations Target="RentService.Currencies_texts/code">
+                                                                                                                                                                <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                                </Annotations>
+                                                                                                                                                            </Schema>
+                                                                                                                                                        </edmx:DataServices>
+                                                                                                                                                    </edmx:Edmx>

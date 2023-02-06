@@ -1,0 +1,86 @@
+{
+  "name": "car-rent-app",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap-cloud-sdk/http-client": "^2.14.0",
+    "@sap/approuter": "^13.1.0",
+    "@sap/cds": "^6",
+    "@sap/hdi-deploy": "^4.5.3",
+    "@sap/xssec": "^3.2.17",
+    "express": "^4",
+    "hdb": "^0.19.0",
+    "passport": "^0.6.0"
+  },
+  "devDependencies": {
+    "@sap/ux-specification": "^1.102.15",
+    "rimraf": "^3.0.2",
+    "sqlite3": "^5.0.4"
+  },
+  "scripts": {
+    "start": "cds run",
+    "watch-zlabbooking": "cds watch --open zlabbooking/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy car-rent-app --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-zlabclients": "cds watch --open zlabclients/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-zlabcars": "cds watch --open zlabcars/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-zlaboffices": "cds watch --open zlaboffices/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "engines": {
+    "node": "^16.15"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
+    },
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
+    }
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "hana-cloud"
+      },
+      "uaa": {
+        "kind": "xsuaa"
+      },
+      "CPIDestination": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "CPI_DESTINATION"
+        }
+      }
+    },
+    "hana": {
+      "deploy-format": "hdtable"
+    }
+  },
+  "sapux": [
+    "app/zlabbooking",
+    "app/zlabclients",
+    "app/zlabcars",
+    "app/zlaboffices"
+  ]
+}

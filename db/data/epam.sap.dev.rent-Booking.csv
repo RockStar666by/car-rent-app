@@ -1,0 +1,2 @@
+bookingUUID;bookingID;clientID_clientUUID;carID_carUUID;bookingStatus_ID;beginDate;beginTime;endDate;endTime
+32ca5208-698d-7d7a-9db9-003ef21b6742;1;32ca5208-698d-4d7a-1524-003ef21b6347;83726370-e533-4146-96e3-77a821d0757b;2;2022-01-22;101500;2022-02-22;101500
