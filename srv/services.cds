@@ -20,9 +20,5 @@ service RentService {
 
     entity CarStatuses as projection on masterdata.CarStatuses;
 
-    entity Makes as projection on masterdata.Makes;
-
-    entity Models as projection on masterdata.Models;
-
     entity Currencies   as projection on common.Currencies;
 }

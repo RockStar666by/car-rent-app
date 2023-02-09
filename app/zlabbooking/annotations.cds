@@ -28,7 +28,7 @@ annotate RentService.Booking with @(
             },
             {
                 $Type             : 'UI.DataField',
-                Value             : carID.modelID_ID,
+                Value             : carID.model,
                 ![@UI.Importance] : #High
             },
             {

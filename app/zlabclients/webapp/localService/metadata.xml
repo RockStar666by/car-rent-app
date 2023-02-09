@@ -87,7 +87,7 @@
                 <NavigationProperty Name="model" Type="RentService.Models">
                     <ReferentialConstraint Property="model" ReferencedProperty="name"/>
                 </NavigationProperty>
-                <Property Name="modelID_ID" Type="Edm.String"/>
+                <Property Name="model" Type="Edm.String"/>
                 <NavigationProperty Name="status" Type="RentService.CarStatuses">
                     <ReferentialConstraint Property="status_ID" ReferencedProperty="ID"/>
                 </NavigationProperty>

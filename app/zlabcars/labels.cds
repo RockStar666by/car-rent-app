@@ -1,6 +1,6 @@
 using {epam.sap.dev.rent as rent} from '../../db/schema';
 
-annotate rent.Cars with @title       : '{i18n>modelID}' {
+annotate rent.Cars with @title       : '{i18n>model}' {
     carUUID     	@UI.Hidden;
     carID       	@title                  : '{i18n>carID}';
     toOffice    	@title                  : '{i18n>officeAddress}'

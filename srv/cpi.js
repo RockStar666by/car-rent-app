@@ -25,7 +25,7 @@ async function orderCar(req) {
         officeCity: officeInfo[0].city,
         officeStreet: officeInfo[0].street,
         CurrencyCode_code: orderInfo[0].CurrencyCode_code,
-        price: orderInfo[0].price,
+        rent: orderInfo[0].rent,
         quantity: quantity,
         status_ID: "1",
       };

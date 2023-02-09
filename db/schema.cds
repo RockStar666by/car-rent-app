@@ -30,17 +30,17 @@ entity Clients: managed {
 };
 
 entity Cars: managed {
-    key carUUID   : UUID;
-        carID     : Integer;
-        toOffice: Association to Offices;
-        make: String(40);
-        model: String(40);
-        status: Association to One masterdata.CarStatuses;
-        quantity : Integer;
+    key carUUID      : UUID;
+        carID        : Integer;
+        toOffice     : Association to Offices;
+        make         : String(40);
+        model        : String(40);
+        status       : Association to One masterdata.CarStatuses;
+        quantity     : Integer;
         available    : Integer;
-        rent      : Decimal(15, 2);
-        CurrencyCode: Currency;
-        image      : LargeBinary @Core.MediaType : 'image/png';
+        rent         : Decimal(15, 2);
+        CurrencyCode : Currency;
+        image        : LargeBinary @Core.MediaType : 'image/png';
 }
 
 entity Offices: managed {

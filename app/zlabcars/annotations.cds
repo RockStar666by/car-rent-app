@@ -23,7 +23,7 @@ annotate service.Cars with @(
             },
             {
                 $Type             : 'UI.DataField',
-                Value             : modelID_ID,
+                Value             : model,
                 ![@UI.Importance] : #High
             },
             {
