@@ -3,6 +3,8 @@ using {epam.sap.dev.rent as rent} from '../../db/schema';
 annotate rent.Cars with @title       : '{i18n>model}' {
     carUUID     	@UI.Hidden;
     carID       	@title                  : '{i18n>carID}';
+    make            @title                  : '{i18n>make}';
+    model           @title                  : '{i18n>model}';
     toOffice    	@title                  : '{i18n>officeAddress}'
                  	@Common.Text            : toOffice.street
                  	@Common.TextArrangement : #TextOnly;

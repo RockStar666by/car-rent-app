@@ -18,18 +18,26 @@ annotate RentService.Booking with @(
             {
                 $Type             : 'UI.DataField',
                 Value             : bookingID,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
             },
             {
                 $Type             : 'UI.DataField',
                 Value             : bookingStatus_ID,
                 Criticality       : bookingStatus.criticality,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '10rem'}
+            },
+            {
+                $Type             : 'UI.DataField',
+                Value             : carID.make,
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
                 Value             : carID.model,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
@@ -156,7 +164,7 @@ annotate RentService.Booking with @(
         {
             $Type  : 'UI.CollectionFacet',
             ID     : 'PODetails',
-            Label  : '{i18n>bookinginfo}',
+            Label  : '{i18n>bookingInfo}',
             Facets : [
                 {
                     $Type  : 'UI.ReferenceFacet',

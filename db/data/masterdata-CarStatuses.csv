@@ -1,4 +1,4 @@
 ID,name,criticality
-0,In Stock,0
-1,Requested,2
-2,In Use,3
+0,In Stock,3
+1,Run Out,2
+2,Out of Stock,1

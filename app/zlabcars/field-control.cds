@@ -6,5 +6,5 @@ annotate RentService.Cars with {
     quantity      	@mandatory;
     rent        	@mandatory;
     CurrencyCode    @mandatory;
-    status       	@readonly;
+    status       	@mandatory;
 };

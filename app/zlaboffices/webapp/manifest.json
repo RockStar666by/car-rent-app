@@ -132,6 +132,7 @@
           "options": {
             "settings": {
               "entitySet": "Offices",
+              "initialLoad": "Enabled",
               "variantManagement": "Page",
               "navigation": {
                 "Offices": {

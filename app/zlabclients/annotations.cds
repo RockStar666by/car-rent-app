@@ -12,12 +12,14 @@ annotate service.Clients with @(
             {
                 $Type             : 'UI.DataField',
                 Value             : firstName,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
                 Value             : lastName,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
@@ -27,6 +29,11 @@ annotate service.Clients with @(
             {
                 $Type             : 'UI.DataField',
                 Value             : phoneNumber,
+                ![@UI.Importance] : #High
+            },
+            {
+                $Type             : 'UI.DataField',
+                Value             : email,
                 ![@UI.Importance] : #High
             }
         ],
@@ -38,8 +45,8 @@ annotate service.Clients with @(
     },
     UI        : {
         HeaderInfo                     : {
-            TypeName       : 'Reader',
-            TypeNamePlural : 'Readers',
+            TypeName       : 'Client',
+            TypeNamePlural : 'Clients',
             Title          : {Value : firstName},
             Description    : {Value : lastName}
         },
@@ -82,6 +89,10 @@ annotate service.Clients with @(
             {
                 $Type : 'UI.DataField',
                 Value : phoneNumber
+            },
+                        {
+                $Type : 'UI.DataField',
+                Value : email
             }
         ]},
         FieldGroup #AdministrativeData : {Data : [

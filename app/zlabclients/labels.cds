@@ -7,4 +7,5 @@ annotate rent.Clients with @title : '{i18n>clientTitle}' {
     lastName      @title             : '{i18n>lastName}';
     clientBirthday @title             : '{i18n>clientBirthday}';
     phoneNumber   @title             : '{i18n>phone}';
+    email         @title             : '{i18n>email}'
 }

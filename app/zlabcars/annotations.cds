@@ -2,8 +2,139 @@ using RentService as service from '../../srv/services';
 
 annotate service.Cars with @(
     UI        : {
-        SelectionFields     : [toOffice_officeUUID],
+        SelectionFields     : [toOffice_officeUUID, status_ID],
         Identification      : [{Value : carUUID}, { $Type : 'UI.DataFieldForAction', Action : 'RentService.orderCar', Label : '{i18n>orderCar}'},],
+        Chart #radialChart : {
+            Title : '{i18n>radialChart}',
+            Description : '{i18n>ThisIsAMicroChart}',
+            ChartType : #Donut,
+            Measures : [
+                available,
+            ],
+            MeasureAttributes : [
+                {
+                    $Type : 'UI.ChartMeasureAttributeType',
+                    Measure : available,
+                    Role : #Axis1,
+                    DataPoint : '@UI.DataPoint#radialChart',
+                },
+            ],
+        },
+        DataPoint #radialChart : { 
+            Value : available,
+            TargetValue : quantity,
+            Criticality : status.criticality,
+        },
+        SelectionPresentationVariant#all : {
+            Text: 'All',
+            SelectionVariant: {
+                SelectOptions:
+                [
+                    {
+                        $Type : 'UI.SelectOptionType',
+                        PropertyName : status_ID,
+                        Ranges: [
+                            {
+                                $Type: 'UI.SelectionRangeType',
+                                Option: #BT,
+                                Low: '0',
+                                High: '2',
+                                Sign: #I,                              
+                            },
+                        ]
+                    }
+                ]
+            },
+            PresentationVariant: {
+                MaxItems       : 1000,
+                SortOrder      : [{Property : 'carID'}],
+                TotalBy: [available],
+                GroupBy: [status_ID],
+                IncludeGrandTotal: true,
+                Visualizations: ['@UI.LineItem']
+            }
+        },
+        SelectionPresentationVariant#instock : {
+            Text: 'In Stock',
+            SelectionVariant: {
+                SelectOptions:
+                [
+                    {
+                        $Type : 'UI.SelectOptionType',
+                        PropertyName : status_ID,
+                        Ranges: [
+                            {
+                                $Type: 'UI.SelectionRangeType',
+                                Option: #EQ,
+                                Low: '0',
+                                Sign: #I,                              
+                            }
+                        ]
+                    }
+                ]
+            },
+            PresentationVariant: {
+                MaxItems       : 1000,
+                SortOrder      : [{Property : 'carID'}],
+                Total: [rent],
+            }
+        },
+        SelectionPresentationVariant#runout  : {
+            Text: 'Run Out',
+            SelectionVariant: {
+                SelectOptions : [
+                    {
+                        $Type : 'UI.SelectOptionType',
+                        PropertyName : status_ID,
+                        Ranges: [
+                            {
+                                $Type: 'UI.SelectionRangeType',
+                                Option: #EQ,
+                                Low: '1',
+                                Sign: #I
+                            }
+                        ]
+                    },
+                ],       
+            },
+            PresentationVariant: {
+                MaxItems       : 1000,
+                SortOrder      : [{Property : 'carID'}],
+                TotalBy: [available],
+                GroupBy: [toOffice.street],
+                IncludeGrandTotal: true,
+                Visualizations: ['@UI.LineItem'], 
+            }
+            
+        },
+        SelectionPresentationVariant#outofstock  : {
+            Text: 'Out of Stock',
+            SelectionVariant: {
+                SelectOptions : [
+                    {
+                        $Type : 'UI.SelectOptionType',
+                        PropertyName : status_ID,
+                        Ranges: [
+                            {
+                                $Type: 'UI.SelectionRangeType',
+                                Option: #EQ,
+                                Low: '2',
+                                Sign: #I
+                            }
+                        ]
+                    },
+                ],       
+            },
+            PresentationVariant: {
+                MaxItems       : 1000,
+                SortOrder      : [{Property : 'carID'}],
+                TotalBy: [available],
+                GroupBy: [toOffice.street],
+                IncludeGrandTotal: true,
+                Visualizations: ['@UI.DataPoint#radialChart'], 
+            }
+            
+        },
         LineItem            : [
             {
                 $Type             : 'UI.DataField',
@@ -14,17 +145,20 @@ annotate service.Cars with @(
                 $Type             : 'UI.DataField',
                 Value             : status_ID,
                 Criticality       : status.criticality,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '10rem'}
             },
             {
                 $Type             : 'UI.DataField',
                 Value             : make,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
                 Value             : model,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
@@ -35,6 +169,11 @@ annotate service.Cars with @(
                 $Type             : 'UI.DataField',
                 Value             : available,
                 ![@UI.Importance] : #High
+            },
+            {
+                $Type : 'UI.DataFieldForAnnotation',
+                Target : '@UI.Chart#radialChart',
+                Label   : '{i18n>radialChart}',
             },
             {
                 $Type             : 'UI.DataField',
@@ -87,6 +226,10 @@ annotate service.Cars with @(
             {
                 $Type : 'UI.DataField',
                 Value : make
+            },
+                        {
+                $Type : 'UI.DataField',
+                Value : model
             },
             {
                 $Type : 'UI.DataField',

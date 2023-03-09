@@ -2,8 +2,8 @@ using {epam.sap.dev.rent as rent} from '../../db/schema';
 
 annotate rent.Cars {
     toOffice     @Common.ValueList : {
-        CollectionPath  : 'Office',
-        Label           : '',
+        CollectionPath  : 'Offices',
+        Label           : 'i18n>office',
         Parameters      : [
             {
                 $Type             : 'Common.ValueListParameterInOut',

@@ -3,12 +3,12 @@ using {epam.sap.dev.rent as rent} from '../../db/schema';
 annotate rent.Booking {
     clientID      @Common.ValueList : {
         CollectionPath  : 'Clients',
-        Label           : '',
+        Label           : 'i18n>client',
         Parameters      : [
             {
                 $Type             : 'Common.ValueListParameterInOut',
                 LocalDataProperty : clientID_clientUUID,
-                ValueListProperty : 'readerUUID'
+                ValueListProperty : 'clientUUID'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -24,7 +24,7 @@ annotate rent.Booking {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'clientBithday'
+                ValueListProperty : 'clientBirthday'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -35,7 +35,7 @@ annotate rent.Booking {
     };
     carID        @Common.ValueList : {
         CollectionPath  : 'Cars',
-        Label           : '',
+        Label           : 'i18n>car',
         Parameters      : [
             {
                 $Type             : 'Common.ValueListParameterInOut',
@@ -48,7 +48,11 @@ annotate rent.Booking {
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'make'
+                ValueListProperty : 'make',
+            },
+            {
+                $Type             : 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty : 'model'
             },
             {
                 $Type             : 'Common.ValueListParameterDisplayOnly',
@@ -63,7 +67,7 @@ annotate rent.Booking {
     };
     bookingStatus @Common.ValueList : {
         CollectionPath  : 'Statuses',
-        Label           : '',
+        Label           : 'i18n>status',
         Parameters      : [
             {
                 $Type             : 'Common.ValueListParameterInOut',

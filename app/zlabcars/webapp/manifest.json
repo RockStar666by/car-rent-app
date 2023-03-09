@@ -111,7 +111,6 @@
       "css": []
     },
     "routing": {
-      "config": {},
       "routes": [
         {
           "pattern": ":?query:",
@@ -133,12 +132,36 @@
             "settings": {
               "entitySet": "Cars",
               "variantManagement": "Page",
+              "initialLoad": "Enabled",
+              "stickyMultiTabHeader": false,
               "navigation": {
                 "Cars": {
                   "detail": {
                     "route": "CarsObjectPage"
                   }
                 }
+              },
+              "views": {
+                "showCounts": true,
+                "paths": [
+                  {
+                    "key": "tab1",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#all",
+                    "visible": "true"
+                  },
+                  {
+                    "key": "tab2",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#instock"
+                  },
+                  {
+                    "key": "tab3",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#runout"
+                  },
+                  {
+                    "key": "tab4",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#outofstock"
+                  }
+                ]
               }
             }
           }
@@ -154,6 +177,11 @@
             }
           }
         }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {}
       }
     }
   },

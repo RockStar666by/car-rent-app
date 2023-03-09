@@ -134,6 +134,7 @@
                     "options": {
                         "settings": {
                             "entitySet": "Clients",
+                            "initialLoad": "Enabled",
                             "variantManagement": "Page",
                             "navigation": {
                                 "Clients": {

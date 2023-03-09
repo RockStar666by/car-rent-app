@@ -3,7 +3,6 @@ const constants = require("./constants");
 
 module.exports = {
   orderCar: orderCar,
-  sendCar: sendCar,
 };
 
 const { Cars, Offices } = cds.entities("epam.sap.dev.rent");
@@ -19,6 +18,7 @@ async function orderCar(req) {
       });
       const payload = {
         carUUID: orderInfo[0].carUUID,
+        userID: req.user.id,
         make: orderInfo[0].make,
         model: orderInfo[0].model,
         officeUUID: orderInfo[0].toOffice_officeUUID,
@@ -29,9 +29,27 @@ async function orderCar(req) {
         quantity: quantity,
         status_ID: "1",
       };
+      console.log("USER:", req.user.id);
       const cpi = await cds.connect.to("CPIDestination");
       await cpi.tx(req).post("/http/rent-order", payload);
-      await UPDATE(Cars, { carUUID: carUUID }).with({ status_ID: "1" });
+      const available = orderInfo[0].available - quantity;
+      if (available > 20) {
+        await UPDATE(Cars, { carUUID: carUUID }).with({
+          available: available,
+        });
+      }
+      if (available > 0 && available <= 20) {
+        await UPDATE(Cars, { carUUID: carUUID }).with({
+          available: available,
+          status_ID: "1",
+        });
+      }
+      if (available === 0) {
+        await UPDATE(Cars, { carUUID: carUUID }).with({
+          available: available,
+          status_ID: "2",
+        });
+      }
     } else return req.error(400, constants.genericErrors.quantityNotApplicable);
   } catch (error) {
     console.log(
@@ -40,5 +58,3 @@ async function orderCar(req) {
     );
   }
 }
-
-async function sendCar(req) {}

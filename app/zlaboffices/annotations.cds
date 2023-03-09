@@ -12,12 +12,14 @@ annotate service.Offices with @(
             {
                 $Type             : 'UI.DataField',
                 Value             : city,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
             {
                 $Type             : 'UI.DataField',
                 Value             : street,
-                ![@UI.Importance] : #High
+                ![@UI.Importance] : #High,
+                ![@HTML5.CssDefaults] : {width : '100%'}
             },
                         {
                 $Type             : 'UI.DataField',
